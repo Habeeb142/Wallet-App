@@ -1,0 +1,7 @@
+-- steps to starting postgress locally
+brew services start postgresql or brew services restart postgresql or brew services stop postgresql
+createuser postgres -s
+psql postgres
+CREATE DATABASE wallet_app_db;
+CREATE USER test_user WITH ENCRYPTED PASSWORD 'Test@123';
+GRANT ALL PRIVILEGES ON DATABASE test_db TO test_user;
