@@ -5,8 +5,9 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
 import { AuthModule } from './auth/auth.module';
-import { ModuleService } from './module/module.service';
 import { EmailService } from './email/email.service';
+import { TransactionsModule } from './transactions/transactions.module';
+import { WalletModule } from './wallet/wallet.module';
 
 @Module({
   imports: [
@@ -23,8 +24,10 @@ import { EmailService } from './email/email.service';
       // synchronize: false //uncomment when going to production
     }),
     AuthModule,
+    TransactionsModule,
+    WalletModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ModuleService, EmailService],
+  providers: [AppService, EmailService],
 })
 export class AppModule {}
