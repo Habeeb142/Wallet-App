@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { EmailService } from './email/email.service';
 import { TransactionsModule } from './transactions/transactions.module';
 import { WalletModule } from './wallet/wallet.module';
+import { Transaction } from './transactions/transaction.entity';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { WalletModule } from './wallet/wallet.module';
       password: process.env.DB_PASSWORD,
       host: process.env.DB_HOST,
       port: 5432,
-      entities: [User],
+      entities: [User, Transaction],
       synchronize: true,
       // synchronize: false //uncomment when going to production
     }),

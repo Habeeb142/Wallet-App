@@ -78,15 +78,15 @@ export class AuthService {
 
     async signIn(payload: SignInDto): Promise<LoggedInResponseDto> {
         try {
-            const { bvn, password } = payload
-            const user = await this.repo.findOneBy({bvn})
+            const { accountId, password } = payload
+            const user = await this.repo.findOneBy({accountId})
             
-            if(!user) throw new UnauthorizedException("Email or Password Ivalid")
+            if(!user) throw new UnauthorizedException("Account ID or Password Ivalid")
             if(!user.activate) throw new UnauthorizedException("Your account is yet to be activated. Please refer to your email")
             const { password: savedPassword } = user
             const [ salt, hash ] = savedPassword.split(".")
             const hashSuppliedPassword = scrypt(password, salt, 32).toString('hex')
-            if(hashSuppliedPassword != hash) throw new UnauthorizedException("Email or Password Invalid")
+            if(hashSuppliedPassword != hash) throw new UnauthorizedException("Account ID or Password Invalid")
             delete user.password //remove password from whats gonna be stored in jwt
             const accessToken = this.jwtService.sign({ ...user }, { secret: process.env.SALT })
             return { 

@@ -1,12 +1,13 @@
 import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Role } from '../auth/roles.enum';
+import { Transaction } from 'src/transactions/transaction.entity';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'bigint', unique: true })
+  @Column({ type: 'varchar', unique: true })
   accountId: string;
 
   @Column({ type: 'bigint', unique: true })
@@ -24,6 +25,9 @@ export class User {
   @Column()
   lastName: string;
 
+  @Column({default: 0})
+  balance: number;
+
   @Column({
       type: 'enum',
       enum: Role,
@@ -38,8 +42,11 @@ export class User {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   dateCreated: Date;
 
-  // @OneToMany(() => Task, (task) => task.assignee)
-  // task: Task;
+  @OneToMany(() => Transaction, (transaction) => transaction.sender)
+  senderTransaction: Transaction;
+
+  @OneToMany(() => Transaction, (transaction) => transaction.recipient)
+  recipientTransaction: Transaction;
 
   @BeforeInsert()
   generateUniqueId() {
